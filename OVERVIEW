@@ -1,0 +1,39 @@
+	Taut, the boolean algebra simplifier.
+
+	Application built in Go with simple interpreter for boolean algebra.
+
+	Functions
+	1. Given a truth table, reduce it to (unsimplified) statement.
+	2. Given statement, simplify if possible.
+	3. Given a statement and condition, return output.
+
+	Representation of Tables
+	Tables are represented using strings of the following form:
+		"A[abcd...],B[efgh...],...->Y[ijkl...]"
+	where A,B,... are input boolean values and Y is the output; a..l are in [0,1].
+	Note that the length of each of the values must be equal.
+	Don't care will be implemented in a later version, most probably as _.
+
+	Examples
+	A	B	A+B	A*B
+	0	0	 0	 0
+	0	1	 1	 0
+	1	0	 1	 0
+	1	1	 1	 1
+	Table 1: AND/OR
+
+	A+B would be represented in the following form
+		"A[0011],B[0101]->Y[0111]",
+	while A*B will be
+		"A[0011],B[0101]->Y[0001]".
+		
+	Representation of Statements
+	Sequences of uppercase letters will be used to represent booleans.
+	
+	The following logical operators are permitted and understood:
+	Operator	Representation
+	AND			*
+	OR			+
+	NOT			!
+	
+	For version 2, operators will be customizable and definable.
