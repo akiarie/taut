@@ -12,20 +12,6 @@ type Table struct {
 	Output []Tcol
 }
 
-/*
-{
-	[
-		{[false false true true] A}
-		{[false true false true] B}
-	]
-
-	[
-		{[false true true true] OR}
-		{[false false false true] AND}
-	]
-}
-*/
-
 func (t Table) String() (s string) {
 	cols := append(t.Input, t.Output...)
 
@@ -37,7 +23,7 @@ func (t Table) String() (s string) {
 			w = test
 		}
 	}
-	width := fmt.Sprintf("%d", w)
+	width := fmt.Sprintf("%d", w-1)
 
 	for _, col := range cols {
 		s += fmt.Sprintf("% "+width+"s\t", col.Name)
@@ -49,7 +35,7 @@ func (t Table) String() (s string) {
 			if col.Values[i] {
 				val = 1
 			}
-			s += fmt.Sprintf("% "+width+"d\t", val)
+			s += fmt.Sprintf("% "+width+"s\t", fmt.Sprintf("%d", val))
 		}
 	}
 	return
