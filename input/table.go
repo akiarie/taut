@@ -37,9 +37,7 @@ func intArrayToBool(ints []int) (bools []bool) {
 	return
 }
 
-// Table takes a raw string of the format
-// "A[abcd...], B[efgh...], ... -> Y[ijkl...], X[mnop...], ..."
-// and returns a truth.Table representing it
+// Table takes a raw string and returns a truth.Table representing it
 func Table(in string) (truth.Table, error) {
 	// remove spaces
 	nospace := stripSpaces(in)
