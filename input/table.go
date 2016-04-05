@@ -41,11 +41,11 @@ func intArrayToBool(ints []int) (bools []bool) {
 type matchMode string
 
 const (
-	inputMode  matchMode = `([A-Z]+)`
-	outputMode matchMode = `([A-Z]+)\[([01]+)\]`
+	modeImplicit matchMode = `([A-Z]+)`
+	modeExplicit matchMode = `([A-Z]+)\[([01]+)\]`
 )
 
-// namespace is a function returns true only for the first call of a particular string
+// namespace returns a function which returns true only for the first call of a particular string
 func namespace() func(string) bool {
 	var names []string
 	return func(s string) bool {
@@ -67,24 +67,25 @@ func parse(in string, mode matchMode, unique func(string) bool) (cols []truth.Tc
 	for i, match := range matches {
 		var values []bool
 		switch mode {
-		case inputMode:
+		case modeImplicit:
+			// "You are not expected to understand this." --Dennis Ritchie :)
 			for j := 0; j < int(math.Pow(2, float64(n))); j++ {
 				v := (j/(int(math.Pow(2, float64(i)))))%2 == 1
 				values = append(values, v)
 			}
-		case outputMode:
+		case modeExplicit:
 			for _, v := range match[2] {
 				values = append(values, v == '1')
 			}
 		default:
-			err = fmt.Errorf("Unknown matchmode '%s'", mode)
-			return
+			return []truth.Tcol{}, fmt.Errorf("Unknown matchmode '%s'", mode)
 		}
+
 		name := match[1]
 		if !unique(name) {
-			err = fmt.Errorf("Duplicate name '%s' for: %v", name, match)
-			return
+			return []truth.Tcol{}, fmt.Errorf("Duplicate name '%s' for: %v", name, match)
 		}
+
 		cols = append(cols, truth.Tcol{name, values})
 	}
 	return
@@ -109,11 +110,11 @@ func Table(in string) (truth.Table, error) {
 	// one unique namespace for both variables
 	variables := namespace()
 
-	input, err := parse(rawIn, inputMode, variables)
+	input, err := parse(rawIn, modeImplicit, variables)
 	if err != nil {
 		return truth.Table{}, err
 	}
-	output, err := parse(rawOut, outputMode, variables)
+	output, err := parse(rawOut, modeExplicit, variables)
 	if err != nil {
 		return truth.Table{}, err
 	}
