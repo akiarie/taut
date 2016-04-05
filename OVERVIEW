@@ -9,8 +9,8 @@ Functions
 
 Representation of Tables
 Tables are represented using strings of the following form:
-    "A[abcd...], B[efgh...], ... -> Y[ijkl...], X[mnop...], ..."
-where A,B,... are input boolean values; Y,X... are the output; a..p are in [0,1].
+    "A, B, ... -> Y[ijkl...], X[mnop...], ..."
+where A,B,... are input boolean values; Y,X... are the output.
 Note that the length of each of the values must be equal.
 All space characters will be ignored.
 Don't care will be implemented in a later version, most probably as _.
@@ -25,11 +25,11 @@ Examples
     1	1	 1	 1
 
 A+B would be represented like this:
-    "A[0011], B[0101] -> OR[0111]",
+    "A, B -> OR[0111]",
 while A*B will be
-    "A[0011], B[0101] -> AND[0001]";
+    "A, B -> AND[0001]";
 the entire table is
-    "A[0011], B[0101] -> OR[0111], AND[0001]".
+    "A, B -> OR[0111], AND[0001]".
     
 Representation of Statements
 Sequences of uppercase letters will be used to represent booleans.
