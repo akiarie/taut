@@ -3,12 +3,13 @@ package main
 import (
 	"amisi/taut/input"
 	"fmt"
+	"log"
 )
 
 func main() {
-	table, err := input.Table("A[0011], B[0101] -> OR[0111], AND[0001]")
+	table, err := input.Table("A, B -> OR[0111]")
 	if err != nil {
-		fmt.Println(err)
+		log.Fatalln(err)
 	}
 	fmt.Println(table)
 }

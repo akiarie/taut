@@ -29,8 +29,8 @@ func TestTable(t *testing.T) {
 
 	// check basic functions
 	ins := []truth.Tcol{
-		truth.Tcol{Name: "A", Values: []bool{false, false, true, true}},
-		truth.Tcol{Name: "B", Values: []bool{false, true, false, true}},
+		truth.Tcol{Name: "A", Values: []bool{false, true, false, true}},
+		truth.Tcol{Name: "B", Values: []bool{false, false, true, true}},
 	}
 	defs := map[string]truth.Table{
 		"AND": truth.Table{ins, []truth.Tcol{truth.Tcol{Name: "Y", Values: []bool{false, false, false, true}}}},
@@ -38,10 +38,10 @@ func TestTable(t *testing.T) {
 		"XOR": truth.Table{ins, []truth.Tcol{truth.Tcol{Name: "Y", Values: []bool{false, true, true, false}}}},
 		"NOR": truth.Table{ins, []truth.Tcol{truth.Tcol{Name: "Y", Values: []bool{true, false, false, false}}}},
 	}
-	and, _ := Table("A[0011],B[0101] -> Y[0001]")
-	or, _ := Table("A[0011],B[0101] -> Y[0111]")
-	xor, _ := Table("A[0011],B[0101] -> Y[0110]")
-	nor, _ := Table("A[0011],B[0101] -> Y[1000]")
+	and, _ := Table("A,B -> Y[0001]")
+	or, _ := Table("A,B -> Y[0111]")
+	xor, _ := Table("A,B -> Y[0110]")
+	nor, _ := Table("A,B -> Y[1000]")
 	tables := map[string]truth.Table{
 		"AND": and, "OR": or, "XOR": xor, "NOR": nor,
 	}

@@ -3,8 +3,8 @@ package truth
 import "fmt"
 
 type Tcol struct {
-	Values []bool
 	Name   string
+	Values []bool
 }
 
 type Table struct {
