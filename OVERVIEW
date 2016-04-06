@@ -43,3 +43,16 @@ The following logical operators are permitted and understood:
     NOT			!
 
 For version 2, operators will be customizable and definable.
+
+We make use of the fact that statements can be mapped to truth tables.
+We distinguish between two types of statements, molecular and atomic.
+    Atomic statements are single-variables, and can be written
+    in the form 'A' without any operators.
+
+    Molecular statments are composed of other statements (molecular and
+    atomic) using operators, and can be written in the form 'A[O]B' where
+    '[O]' represents an operator.
+
+    Examples:
+    Atomic: A,B,C...
+    Molecular: A+B, A*B, (A*B)+C
