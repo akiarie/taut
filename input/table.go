@@ -63,14 +63,16 @@ func namespace() func(string) bool {
 func parse(in string, mode matchMode, unique func(string) bool) (cols []truth.Tcol, err error) {
 	reVal := regexp.MustCompile(string(mode))
 	matches := reVal.FindAllStringSubmatch(in, -1)
-	n := len(matches)
+	// holds 2^len(matches) which is the no. of rows
+	nrows := int(math.Pow(2, float64(len(matches))))
 	for i, match := range matches {
 		var values []bool
 		switch mode {
 		case modeImplicit:
-			// "You are not expected to understand this." --Dennis Ritchie :)
-			for j := 0; j < int(math.Pow(2, float64(n))); j++ {
-				v := (j/(int(math.Pow(2, float64(i)))))%2 == 1
+			// holds 2^i which is the frequency of flips
+			freq := int(math.Pow(2, float64(i)))
+			for j := 0; j < nrows; j++ {
+				v := (j/freq)%2 == 1
 				values = append(values, v)
 			}
 		case modeExplicit:
@@ -121,7 +123,7 @@ func Table(in string) (truth.Table, error) {
 
 	// confirm lengths match
 	l := len(input[0].Values)
-	for _, col := range append(input, output...) {
+	for _, col := range append(input[1:], output...) {
 		if len(col.Values) != l {
 			return truth.Table{}, fmt.Errorf("Invalid input length: len(%v) != len(%v).", col, input[0])
 		}
