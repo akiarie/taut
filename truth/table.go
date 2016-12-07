@@ -12,6 +12,36 @@ type Table struct {
 	Output []Tcol
 }
 
+// Valid returns a boolean indicating whether or not the
+// statement(s) represented by the able are well-defined.
+func (t Table) Valid() bool {
+	// at least one I/O
+	if len(append(t.Input, t.Output...)) < 2 {
+		return false
+	}
+
+	// confirm lengths identical
+	l := len(t.Input[0].Values)
+	for _, col := range append(t.Input[1:], t.Output...) {
+		if len(col.Values) != l {
+			return false
+		}
+	}
+
+	// TODO: check for well-defined-ness of values
+	return true
+}
+
+// Response gives the output state corresponding to the
+// given input values.
+func (t Table) Response(input []bool) ([]bool, error) {
+	// validate table
+	if !t.Valid() {
+		return []bool{}, fmt.Errorf("Invalid table queried for response.")
+	}
+	return []bool{}, fmt.Errorf("Implement!")
+}
+
 func (t Table) String() (s string) {
 	cols := append(t.Input, t.Output...)
 

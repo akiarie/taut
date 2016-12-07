@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	table, err := input.Table("A,B -> OR[1110], AND[0001]")
+	table, err := input.Table("A, B -> Y[0001]")
 	if err != nil {
 		log.Fatalln(err)
 	}
