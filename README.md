@@ -21,7 +21,6 @@ Don't care will be implemented in a later version, most probably as _.
 Below are the truth tables for the logical **AND** and **OR** operations
 and the associated representation in taut syntax.
 
-    Table 1: AND/OR
     A	B	A+B	A*B
     0	0	 0	 0
     0	1	 1	 0
@@ -40,7 +39,6 @@ Sequences of uppercase letters will be used to represent booleans.
 
 The following logical operators are permitted and understood:
     
-    Table 2: Operators
     Operator	Representation
     AND			*
     OR			+
