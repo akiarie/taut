@@ -6,7 +6,7 @@ it seemed appropriate to implement taut in the form of a simple interpreter.
 We begin by specifying the grammar for inputting truth tables. `||` is the concatenation operator.
 ```
 table -> op | table , op
-op    -> id||[||bits||]
+op    -> id||[ bits ]
 id    -> alpha | id||alpha
 alpha -> A | B | ... | Z
 bits  -> bit | bits||bit
