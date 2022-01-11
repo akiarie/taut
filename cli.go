@@ -1,8 +1,9 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
-	"log"
+	"os"
 	"regexp"
 	"strings"
 	"unicode"
@@ -21,7 +22,13 @@ func (p *parser) error(msg string) {
 	panic(fmt.Sprintf("Error: %s at %d %q in %q", msg, p.input[p.pos].pos, p.input[p.pos].value, p.raw))
 }
 
-func (p *parser) parsetable() {
+func (p *parser) parsetable() (reterr error) {
+	defer func() {
+		if r := recover(); r != nil {
+			reterr = fmt.Errorf("%v", r)
+			return
+		}
+	}()
 	p.table = table{}
 	for p.pos < len(p.input) {
 		var op operator
@@ -72,6 +79,7 @@ func (p *parser) parsetable() {
 			}
 		}
 	}
+	return nil
 }
 
 func (p *parser) punct(c byte) {
@@ -145,12 +153,21 @@ func tokenize(untrim string) ([]token, error) {
 }
 
 func main() {
-	raw := "OR[01111111], AND[00000001], XOR[01101000]"
-	tokens, err := tokenize(raw)
-	if err != nil {
-		log.Fatalln(err)
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Println("taut ~ a boolean algebra calculator")
+	for {
+		fmt.Printf("τ: ")
+		raw, _ := reader.ReadString('\n')
+		tokens, err := tokenize(raw)
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+		p := &parser{input: tokens, raw: raw}
+		if err := p.parsetable(); err != nil {
+			fmt.Println(err)
+			continue
+		}
+		fmt.Println(p.table)
 	}
-	p := &parser{input: tokens, raw: raw}
-	p.parsetable()
-	fmt.Println(p.table)
 }
