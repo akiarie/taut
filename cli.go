@@ -25,7 +25,7 @@ func (p *parser) parsetable() {
 	p.table = table{}
 	for p.pos < len(p.input) {
 		var op operator
-		if tk := p.input[p.pos]; tk.class == tkSpace && p.pos > 0 {
+		if p.input[p.pos].class == tkSpace && p.pos > 0 {
 			p.pos++
 		}
 		if tk := p.input[p.pos]; tk.class != tkId {
@@ -35,16 +35,27 @@ func (p *parser) parsetable() {
 			p.pos++
 		}
 		p.punct('[')
-		if tk := p.input[p.pos]; tk.class == tkSpace {
+		if p.input[p.pos].class == tkSpace {
 			p.pos++
 		}
 		if tk := p.input[p.pos]; tk.class != tkBits {
 			p.error("operator must contain bits")
 		} else {
+			if len(p.table) > 0 && len(tk.value) != len(p.table[0].bits) {
+				p.error(
+					fmt.Sprintf("mismatch: cannot have operators of len %d mixed with %d",
+						len(tk.value), len(p.table[0].bits)),
+				)
+			}
+			for B := len(tk.value); B > 0; B /= 2 {
+				if B > 1 && B%2 != 0 {
+					p.error(fmt.Sprintf("%d is not a power of 2", len(tk.value)))
+				}
+			}
 			op.bits = tk.value
 			p.pos++
 		}
-		if tk := p.input[p.pos]; tk.class == tkSpace {
+		if p.input[p.pos].class == tkSpace {
 			p.pos++
 		}
 		p.punct(']')
@@ -134,7 +145,7 @@ func tokenize(untrim string) ([]token, error) {
 }
 
 func main() {
-	raw := "ID[01], NOT[10], OR[0111], AND[0001], XOR[0110]"
+	raw := "OR[01111111], AND[00000001], XOR[01101000]"
 	tokens, err := tokenize(raw)
 	if err != nil {
 		log.Fatalln(err)
